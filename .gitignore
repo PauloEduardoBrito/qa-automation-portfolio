@@ -7,3 +7,4 @@ cypress/videos/
 cypress/screenshots/
 .DS_Store
 Thumbs.db
+cypress/reports/
