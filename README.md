@@ -1,97 +1,120 @@
-
 # QA Automation Portfolio
 
-Projeto de portfólio para demonstrar práticas de Quality Assurance (QA) e automação de testes com Cypress.
+Projeto de portfólio voltado à prática de Quality Assurance (QA), automação de testes e integração contínua, utilizando Cypress e uma aplicação de demonstração desenvolvida com Node.js e Express.
 
 ## Objetivo
 
-Desenvolver uma aplicação de login simples para praticar testes de API, testes de interface, autenticação baseada em sessão e proteção de acesso ao dashboard.
+Demonstrar conhecimentos práticos em automação de testes de API e interface, validação de autenticação, proteção de rotas, geração de relatórios e execução automatizada de testes em pipeline CI/CD.
 
 ## Tecnologias utilizadas
 
-- Node.js
-- Express
+- Node.js e Express
+- JavaScript e HTML
 - Cypress
-- JavaScript
-- HTML
+- cypress-mochawesome-reporter
 - Git e GitHub
+- GitHub Actions
+- Jira para gestão das atividades
 
-## Funcionalidades implementadas
+## Funcionalidades da aplicação
 
-- Endpoint de saúde da API (`GET /api/health`).
-- Login com validação de credenciais (`POST /api/login`).
-- Consulta da sessão autenticada (`GET /api/me`).
-- Persistência da autenticação por sessão.
-- Proteção da rota `/dashboard`.
-- Exibição do usuário autenticado no dashboard.
+- Verificação de disponibilidade da API.
+- Login com validação de credenciais.
+- Autenticação baseada em sessão.
+- Consulta do estado de autenticação.
+- Proteção de acesso ao dashboard.
+- Exibição do usuário autenticado.
 
-## Pré-requisitos
+## Testes automatizados
+
+A suíte Cypress contempla:
+
+- Testes de API.
+- Login com credenciais válidas e inválidas.
+- Validação da autenticação e da sessão.
+- Testes da interface de login.
+- Persistência da autenticação após atualização da página.
+- Proteção de acesso ao dashboard.
+- Validação da exibição do usuário autenticado.
+
+## Execução local
+
+### Pré-requisitos
 
 - Node.js e npm instalados.
 - Git instalado.
 
-## Instalação
-
-Clone o repositório:
+### Instalar as dependências
 
 ```bash
 git clone https://github.com/PauloEduardoBrito/qa-automation-portfolio.git
 cd qa-automation-portfolio
+npm ci
 ```
 
-Instale as dependências:
+### Iniciar a aplicação
 
 ```bash
-npm install
+npm start
 ```
 
-## Executar a aplicação
+Acesse `http://localhost:3000`.
 
-Inicie o servidor:
+### Executar os testes
+
+Com a aplicação em execução, abra outro terminal na raiz do projeto:
 
 ```bash
-node server/server.js
+npm test
 ```
 
-Acesse a aplicação em:
-
-http://localhost:3000
-
-## Executar os testes automatizados
-
-Com o servidor em execução, abra outro terminal na pasta do projeto e execute toda a suíte:
+Para abrir a interface interativa do Cypress:
 
 ```bash
-npx cypress run
+npm run test:open
 ```
 
-Para abrir a interface do Cypress:
+## Relatórios de execução
 
-```bash
-npx cypress open
-```
+O projeto utiliza `cypress-mochawesome-reporter` para gerar relatórios HTML.
 
-## Cobertura de testes
+Após a execução dos testes, o relatório local fica disponível em:
 
-Os testes atuais cobrem:
+`cypress/reports/html/index.html`
 
-- Saúde da API.
-- Login com credenciais válidas e inválidas.
-- Autenticação e consulta da sessão.
-- Login pela interface.
-- Persistência da autenticação após atualizar a página.
-- Proteção de acesso ao dashboard.
-- Exibição do usuário autenticado.
+A pasta de relatórios gerados não é versionada no Git.
+
+## Integração contínua — GitHub Actions
+
+O workflow está definido em `.github/workflows/cypress.yml`.
+
+A pipeline executa automaticamente em eventos de `push` e `pull_request` direcionados à branch `main`.
+
+As etapas incluem instalação de dependências, inicialização da aplicação, execução da suíte Cypress e publicação do relatório HTML como artefato, quando disponível.
+
+O artefato `cypress-html-report` possui retenção configurada para 14 dias.
+
+A execução da pipeline e a consulta do artefato foram validadas com sucesso.
 
 ## Credenciais de demonstração
 
 Para uso local:
 
-- Usuário: `admin`
-- Senha: `123456`
+- **Usuário:** `admin`
+- **Senha:** `123456`
 
-Essas credenciais são fictícias e destinadas exclusivamente ao ambiente de demonstração.
+Credenciais fictícias para fins de demonstração. Não utilizar em ambientes reais.
 
-## Status do projeto
+## Documentação técnica
 
-Projeto em desenvolvimento. A cobertura automatizada existente foi executada localmente com sucesso. A configuração de CI/CD ainda está pendente.
+Consulte [`docs/technical-overview.md`](docs/technical-overview.md) para conhecer a arquitetura, a organização dos testes, a execução local, os relatórios e o pipeline CI/CD.
+
+## Próximas evoluções
+
+- Publicar evidências automáticas de falhas nos testes.
+- Integrar a execução dos testes ao Jenkins.
+- Expandir a cobertura de testes e a documentação técnica.
+
+## Status
+
+Projeto em evolução contínua. A suíte Cypress, a geração de relatórios HTML e a execução automatizada pelo GitHub Actions foram implementadas e validadas.
