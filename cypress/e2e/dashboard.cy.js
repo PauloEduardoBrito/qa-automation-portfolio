@@ -1,4 +1,4 @@
-describe('Dashboar - Proteção de acesso', () => {
+describe('Dashboard - Proteção de acesso', () => {
     it('deve redirecionar para o login quando não autenticado', () => {
         cy.clearCookies()
 

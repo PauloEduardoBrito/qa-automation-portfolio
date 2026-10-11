@@ -1,4 +1,4 @@
-describe('Login - Interdace', () => {
+describe('Login - Interface', () => {
     beforeEach(() => {  //abre a página antes de cada teste.
         cy.visit('/')  //acessa o baseUrl configurado no Cypress.
     })
