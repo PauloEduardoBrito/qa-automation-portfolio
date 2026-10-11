@@ -1,0 +1,83 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>QA Automation Portfolio - Login</title>
+</head>
+<body>
+  <main>
+    <h1>Login</h1>
+
+    <form id="loginForm">
+      <label for="username">Usuário</label>
+      <input
+        type="text"
+        id="username"
+        name="username"
+        required
+      >
+
+      <label for="password">Senha</label>
+      <input
+        type="password"
+        id="password"
+        name="password"
+        required
+      >
+
+      <button type="submit" id="loginButton">
+        Entrar
+      </button>
+    </form>
+
+    <p id="message" role="status"></p>
+  </main>
+<script>
+  const loginForm = document.getElementById('loginForm')
+  const message = document.getElementById('message')
+async function checkSession() {
+  try {
+    const response = await fetch('/api/me')
+    const data = await response.json()
+
+    if (response.ok && data.authenticated) {
+      message.textContent = `Usuário autenticado: ${data.user.username}`
+      message.style.color = 'green'
+    }
+  } catch (error) {
+    message.textContent = 'Erro ao verificar a sessão.'
+    message.style.color = 'red'
+  }
+}
+
+checkSession()
+
+  loginForm.addEventListener('submit', async (event) => {
+    event.preventDefault()
+
+    const username = document.getElementById('username').value
+    const password = document.getElementById('password').value
+
+    try {
+      const response = await fetch('/api/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ username, password })
+      })
+
+      const data = await response.json()
+
+      message.textContent = data.message
+      message.style.color = response.ok ? 'green' : 'red'
+    } catch (error) {
+      message.textContent = 'Erro ao conectar com o servidor.'
+      message.style.color = 'red'
+    }
+  })
+</script>
+</body>
+</html>

@@ -1,0 +1,38 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard - QA Automation Portfolio</title>
+</head>
+<body>
+  <main>
+    <h1>Dashboard</h1>
+    <p id="welcomeMessage">Carregando usuário...</p>
+  </main>
+  <script>
+  async function loadUser() {
+    const welcomeMessage = document.getElementById('welcomeMessage')
+
+    try {
+      const response = await fetch('/api/me')
+      const data = await response.json()
+
+      if (!response.ok || !data.authenticated) {
+        window.location.href = '/'
+        return
+      }
+
+      welcomeMessage.textContent =
+        `Bem-vindo, ${data.user.username}!`
+    } catch (error) {
+      welcomeMessage.textContent =
+        'Erro ao carregar os dados do usuário.'
+    }
+  }
+
+  loadUser()
+</script>
+</body>
+</html>
