@@ -32,13 +32,15 @@ jobs:
       - name: Run Cypress tests
         run: npm test
 
-
-      - name: Upload Cypress report
+      - name: Upload Cypress report and evidence
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: cypress-html-report
-          path: cypress/reports/html/
+          name: cypress-test-evidence
+          path: |
+            cypress/reports/html/
+            cypress/screenshots/
+            cypress/videos/
           if-no-files-found: warn
           retention-days: 14
 
