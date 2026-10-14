@@ -69,10 +69,14 @@ checkSession()
         body: JSON.stringify({ username, password })
       })
 
-      const data = await response.json()
+    const data = await response.json()
 
-      message.textContent = data.message
-      message.style.color = response.ok ? 'green' : 'red'
+    message.textContent = data.message
+    message.style.color = response.ok ? 'green' : 'red'
+
+    if (response.ok && data.success) {
+      window.location.href = '/dashboard'
+    }
     } catch (error) {
       message.textContent = 'Erro ao conectar com o servidor.'
       message.style.color = 'red'

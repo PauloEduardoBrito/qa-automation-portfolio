@@ -76,6 +76,24 @@ app.get('/dashboard', (req, res) => {
   )
 })
 
+app.post('/api/logout', (req, res) => {
+  req.session.destroy((error) => {
+    if (error) {
+      return res.status(500).json({
+        success: false,
+        message: 'Erro ao encerrar a sessão.'
+      })
+    }
+
+    res.clearCookie('connect.sid')
+
+    return res.status(200).json({
+      success: true,
+      message: 'Logout realizado com sucesso!'
+    })
+  })
+})
+
 app.listen(PORT, () => {    //inicia o servidor.
     console.log(`Servidor rodando em http://localhost:${PORT}`)
 })

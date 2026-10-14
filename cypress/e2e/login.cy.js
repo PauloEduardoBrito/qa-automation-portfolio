@@ -8,9 +8,10 @@ describe('Login - Interface', () => {
         cy.get('#password').type('123456')  //digita nos campos.
         cy.get('#loginButton').click()
 
-        cy.get('#message')
-            .should('be.visible')    //verifica o resultado esperado.
-            .and('contain.text', 'Login realizado com sucesso!')
+        cy.url().should('include', '/dashboard')
+        cy.get('#welcomeMessage')
+            .should('be.visible')
+            .and('contain.text', 'Bem-vindo, admin!')
     })
 
     it('deve realizar login com credenciais inválidas', () => {
@@ -21,6 +22,8 @@ describe('Login - Interface', () => {
         cy.get('#message')
             .should('be.visible')
             .and('contain.text', 'Usuário ou senha inválidos.')
+
+        cy.url().should('not.include', '/dashboard')
     })
 
     it('deve manter a autenticação após atualizar a página', () => {
@@ -28,12 +31,14 @@ describe('Login - Interface', () => {
         cy.get('#password').type('123456')
         cy.get('#loginButton').click()
 
-        cy.get('#message')
-            .should('contain.text', 'Login realizado com sucesso!')
+        cy.url().should('include', '/dashboard')
+        cy.get('#welcomeMessage')
+        .should('contain.text', 'Bem-vindo', 'admin!')
 
         cy.reload()
 
-        cy.get('#message')
-            .should('contain.text', 'Usuário autenticado: admin')
+        cy.url().should('include', '/dashboard')
+        cy.get('#welcomeMessage')
+            .should('contain.text', 'Bem-vindo', 'admin!')
     })
 })
