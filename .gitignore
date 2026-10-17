@@ -8,3 +8,7 @@ cypress/screenshots/
 .DS_Store
 Thumbs.db
 cypress/reports/
+# Banco de dados SQLite local
+server/database/*.db
+server/database/*.db-shm
+server/database/*.db-wal

@@ -118,3 +118,49 @@ Consulte [`docs/technical-overview.md`](docs/technical-overview.md) para conhece
 ## Status
 
 Projeto em evolução contínua. A suíte Cypress, a geração de relatórios HTML e a execução automatizada pelo GitHub Actions foram implementadas e validadas.
+## Testes de banco de dados
+
+O projeto utiliza SQLite para persistir os usuários da aplicação de demonstração e bcryptjs para verificar senhas por meio de hashes.
+
+### Componentes
+
+- `server/database/db.js`: inicializa o banco SQLite e cria a tabela `users`.
+- `server/database/seed.js`: cadastra ou atualiza o usuário de demonstração.
+- `cypress/e2e/database.cy.js`: valida consultas ao banco de dados.
+- `cypress.config.js`: registra a task `db:findUser`, permitindo que os testes consultem o banco pelo processo Node.js do Cypress.
+
+### Preparação do banco
+
+Na raiz do projeto, execute:
+
+\`\`\`bash
+node server/database/seed.js
+\`\`\`
+
+O comando cria ou atualiza o usuário de demonstração no banco local.
+
+### Execução dos testes
+
+Com o servidor Express iniciado em outro terminal:
+
+\`\`\`bash
+node server/server.js
+\`\`\`
+
+Execute somente os testes de banco de dados:
+
+\`\`\`bash
+npx cypress run --spec "cypress/e2e/database.cy.js"
+\`\`\`
+
+Execute toda a suíte:
+
+\`\`\`bash
+npx cypress run
+\`\`\`
+
+### Segurança e versionamento
+
+O banco SQLite é gerado localmente e não deve ser enviado ao repositório. O arquivo `.gitignore` exclui o banco e seus arquivos auxiliares, mantendo os scripts necessários para recriá-lo.
+
+A senha de demonstração é destinada exclusivamente ao ambiente local. Em aplicações reais, as credenciais e os mecanismos de autenticação devem seguir requisitos de segurança apropriados.

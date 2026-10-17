@@ -1,9 +1,8 @@
 const session = require('express-session')
 const express = require('express') // importa o Express, que usaremos para criar o servidor HTTP.
 const path = require('path')
-
-
-
+const bcrypt = require('bcryptjs')
+const db = require('./database/db')
 
 const app = express() //cria a aplicação do servidor.
 const PORT = 3000 //define a porta em que o servidor escutará.
@@ -34,20 +33,39 @@ app.get('/api/health', (reg, res) => {   //cria uma rota para verificar se o ser
 app.post('/api/login', (req, res) => {
   const { username, password } = req.body
 
-  if (username === 'admin' && password === '123456') {
-    req.session.user = {
-      username: username
-    }
-
-    return res.status(200).json({
-      success: true,
-      message: 'Login realizado com sucesso!'
+  if (
+    typeof username !== 'string' ||
+    typeof password !== 'string' ||
+    !username ||
+    !password
+  ) {
+    return res.status(400).json({
+      success: false,
+      message: 'Usuário e senha são obrigatórios.'
     })
   }
 
-  return res.status(401).json({
-    success: false,
-    message: 'Usuário ou senha inválidos.'
+  const user = db.prepare(`
+    SELECT id, username, password
+    FROM users
+    WHERE username = ?
+  `).get(username)
+
+  if (!user || !bcrypt.compareSync(password, user.password)) {
+    return res.status(401).json({
+      success: false,
+      message: 'Usuário ou senha inválidos.'
+    })
+  }
+
+  req.session.user = {
+    id: user.id,
+    username: user.username
+  }
+
+  return res.status(200).json({
+    success: true,
+    message: 'Login realizado com sucesso!'
   })
 })
 
